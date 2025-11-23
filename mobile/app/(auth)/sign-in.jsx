@@ -1,4 +1,4 @@
-import { useSignIn } from '@clerk/clerk-expo'
+import { useSignIn, useOAuth } from '@clerk/clerk-expo'
 import { useRouter } from 'expo-router'
 import { Text, TextInput, TouchableOpacity, View, Image } from 'react-native'
 import React from 'react'
@@ -6,16 +6,38 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { styles } from '../../styles/auth.styles'
 import { Ionicons } from '@expo/vector-icons'
 import { COLORS } from '../../constants/colors'
+import * as WebBrowser from 'expo-web-browser'
+import * as Linking from 'expo-linking'
+
+WebBrowser.maybeCompleteAuthSession()
 
 export default function Page() {
   const { signIn, setActive, isLoaded } = useSignIn()
   const router = useRouter()
+
+  const { startOAuthFlow: startGoogleFlow } = useOAuth({ strategy: 'oauth_google' })
+  const { startOAuthFlow: startFacebookFlow } = useOAuth({ strategy: 'oauth_facebook' })
 
   const [emailAddress, setEmailAddress] = React.useState('')
   const [password, setPassword] = React.useState('')
   const [error, setError] = React.useState(null)
   const [pendingSecondFactor, setPendingSecondFactor] = React.useState(false)
   const [secondFactorCode, setSecondFactorCode] = React.useState('')
+
+  const onSelectAuth = async (strategy) => {
+    try {
+      const { createdSessionId, setActive } = await (strategy === 'oauth_google' ? startGoogleFlow : startFacebookFlow)()
+
+      if (createdSessionId) {
+        setActive({ session: createdSessionId })
+        router.replace('/')
+      } else {
+        // Use signIn or signUp for next steps such as MFA
+      }
+    } catch (err) {
+      console.error('OAuth error', err)
+    }
+  }
 
   const onSignInPress = async () => {
     if (!isLoaded) return
@@ -153,6 +175,21 @@ export default function Page() {
         <TouchableOpacity style={styles.button} onPress={onSignInPress}>
           <Text style={styles.buttonText}>Sign In</Text>
         </TouchableOpacity>
+
+        <View style={styles.dividerContainer}>
+          <View style={styles.dividerLine} />
+          <Text style={styles.dividerText}>OR</Text>
+          <View style={styles.dividerLine} />
+        </View>
+
+        <View style={styles.socialButtonsContainer}>
+          <TouchableOpacity style={styles.socialButton} onPress={() => onSelectAuth('oauth_google')}>
+            <Ionicons name="logo-google" size={24} color={COLORS.text} />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.socialButton} onPress={() => onSelectAuth('oauth_facebook')}>
+            <Ionicons name="logo-facebook" size={24} color="#1877F2" />
+          </TouchableOpacity>
+        </View>
 
         <View style={styles.footerContainer}>
           <Text style={styles.footerText}>Don&apos;t have an account?</Text>
