@@ -1,5 +1,6 @@
 // react custom hook file 
 import React, { useCallback } from 'react';
+import { Alert } from 'react-native';
 
 const API_URL = 'https://localhost:3000/api';
 
@@ -39,6 +40,7 @@ export const useTransaction = (userId) => {
     if (!userId) return;
     setIsLoading(true);
     try {
+        //promise all to fetch both transactions and summary concurrently
       await Promise.all([fetchTransactions(), fetchSummary()]);
     } catch (error) {
       console.error('Error loading data:', error);
@@ -46,5 +48,21 @@ export const useTransaction = (userId) => {
         setIsLoading(false);
     }
     }, [fetchTransactions, fetchSummary, userId]);
+    
+    const deleteTransaction = async (id) => {
+    try {
+      const response = await fetch(`${API_URL}/transactions/${id}`, { method: "DELETE" });
+      if (!response.ok) throw new Error("Failed to delete transaction");
+
+      // Refresh data after deletion
+      loadData();
+      Alert.alert("Success", "Transaction deleted successfully");
+    } catch (error) {
+      console.error("Error deleting transaction:", error);
+      Alert.alert("Error", error.message);
+    }
+  };
+
+  return { transactions, summary, isLoading, loadData, deleteTransaction };
 };
 
