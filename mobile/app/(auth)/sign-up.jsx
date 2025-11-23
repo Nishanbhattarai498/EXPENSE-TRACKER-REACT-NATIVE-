@@ -1,7 +1,7 @@
 import * as React from 'react'
-import { Text, TextInput, TouchableOpacity, View,KeyboardAvoidingView } from 'react-native'
+import { Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { useSignUp } from '@clerk/clerk-expo'
-import { Link, useRouter } from 'expo-router'
+import { useRouter } from 'expo-router'
 import { styles } from '../../styles/auth.styles'
 import { Ionicons } from '@expo/vector-icons';
 import { COLORS } from '../../constants/colors';
