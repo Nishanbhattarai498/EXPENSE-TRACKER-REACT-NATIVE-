@@ -3,17 +3,19 @@ import { useRouter } from 'expo-router'
 import { Text, TextInput, TouchableOpacity, View, Image } from 'react-native'
 import React from 'react'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { styles } from '../../styles/auth.styles'
+import { getAuthStyles } from '../../styles/auth.styles'
 import { Ionicons } from '@expo/vector-icons'
-import { COLORS } from '../../constants/colors'
 import * as WebBrowser from 'expo-web-browser'
-import * as Linking from 'expo-linking'
+import { useTheme } from '../../context/ThemeContext'
 
+// Ensure auth session is complete
 WebBrowser.maybeCompleteAuthSession()
 
 export default function Page() {
   const { signIn, setActive, isLoaded } = useSignIn()
   const router = useRouter()
+  const { theme } = useTheme()
+  const styles = getAuthStyles(theme)
 
   const { startOAuthFlow: startGoogleFlow } = useOAuth({ strategy: 'oauth_google' })
   const { startOAuthFlow: startFacebookFlow } = useOAuth({ strategy: 'oauth_facebook' })
@@ -110,10 +112,10 @@ export default function Page() {
           <Text style={styles.title}>Enter Verification Code</Text>
           {error ? (
             <View style={styles.errorBox}>
-              <Ionicons name="warning" size={16} color={COLORS.expense} />
+              <Ionicons name="warning" size={16} color={theme.expense} />
               <Text style={styles.errorText}>{error}</Text>
               <TouchableOpacity onPress={() => setError(null)}>
-                <Ionicons name="close" size={16} color={COLORS.textLight} />
+                <Ionicons name="close" size={16} color={theme.textLight} />
               </TouchableOpacity>
             </View>
           ) : null}
@@ -149,10 +151,10 @@ export default function Page() {
         <Text style={styles.title}>Welcome Back</Text>
         {error ? (
           <View style={styles.errorBox}>
-            <Ionicons name="warning" size={16} color={COLORS.expense} />
+            <Ionicons name="warning" size={16} color={theme.expense} />
             <Text style={styles.errorText}>Password Incorrect Please Try Again</Text>
             <TouchableOpacity onPress={() => setError('')}>
-              <Ionicons name="close" size={16} color={COLORS.textLight} />
+              <Ionicons name="close" size={16} color={theme.textLight} />
             </TouchableOpacity>
           </View>
         ) : null}
@@ -184,7 +186,7 @@ export default function Page() {
 
         <View style={styles.socialButtonsContainer}>
           <TouchableOpacity style={styles.socialButton} onPress={() => onSelectAuth('oauth_google')}>
-            <Ionicons name="logo-google" size={24} color={COLORS.text} />
+            <Ionicons name="logo-google" size={24} color={theme.text} />
           </TouchableOpacity>
           <TouchableOpacity style={styles.socialButton} onPress={() => onSelectAuth('oauth_facebook')}>
             <Ionicons name="logo-facebook" size={24} color="#1877F2" />

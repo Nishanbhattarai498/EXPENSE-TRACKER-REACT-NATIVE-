@@ -1,18 +1,21 @@
-import { SignedIn, SignedOut, useUser } from "@clerk/clerk-expo";
-import { Link, useRouter } from "expo-router";
+import { useUser } from "@clerk/clerk-expo";
+import {  useRouter } from "expo-router";
 import { Alert, FlatList, Image, RefreshControl, Text, TouchableOpacity, View } from "react-native";
 import { SignOutButton } from '../../components/SignOutButton';
 import { useTransaction } from "../../hooks/useTransaction";
 import { useEffect, useState } from "react";
 import PageLoader from "../../components/PageLoader";
-import { styles } from "../../styles/home.styles";
+import { getHomeStyles } from "../../styles/home.styles";
 import { Ionicons } from "@expo/vector-icons";
 import { BalanceCard } from "../../components/BalanceCard";
 import { TransactionItem } from "../../components/TransactionItem";
 import NoTransactionsFound from "../../components/NoTransactionsFound";
+import { useTheme } from "../../context/ThemeContext";
 
 export default function Page() {
   const { user } = useUser();
+  const { theme } = useTheme();
+  const styles = getHomeStyles(theme);
   const router = useRouter();
   const [refreshing, setRefreshing] = useState(false);
 
@@ -64,6 +67,9 @@ export default function Page() {
           </View>
           {/* RIGHT */}
           <View style={styles.headerRight}>
+            <TouchableOpacity style={{ marginRight: 10 }} onPress={() => router.push("/settings")}>
+              <Ionicons name="settings-outline" size={24} color={theme.text} />
+            </TouchableOpacity>
             <TouchableOpacity style={styles.addButton} onPress={() => router.push("/create")}>
               <Ionicons name="add" size={20} color="#FFF" />
               <Text style={styles.addButtonText}>Add</Text>

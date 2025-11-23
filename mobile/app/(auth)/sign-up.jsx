@@ -2,19 +2,20 @@ import * as React from 'react'
 import { Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { useSignUp, useOAuth } from '@clerk/clerk-expo'
 import { useRouter } from 'expo-router'
-import { styles } from '../../styles/auth.styles'
+import { getAuthStyles } from '../../styles/auth.styles'
 import { Ionicons } from '@expo/vector-icons';
-import { COLORS } from '../../constants/colors';
 import {Image} from "expo-image";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import * as WebBrowser from 'expo-web-browser'
-import * as Linking from 'expo-linking'
+import { useTheme } from '../../context/ThemeContext'
 
 WebBrowser.maybeCompleteAuthSession()
 
 export default function SignUpScreen() {
   const { isLoaded, signUp, setActive } = useSignUp()
   const router = useRouter()
+  const { theme } = useTheme()
+  const styles = getAuthStyles(theme)
 
   const { startOAuthFlow: startGoogleFlow } = useOAuth({ strategy: 'oauth_google' })
   const { startOAuthFlow: startFacebookFlow } = useOAuth({ strategy: 'oauth_facebook' })
@@ -102,10 +103,10 @@ export default function SignUpScreen() {
         {
             error?(
                 <View style={styles.errorBox}>
-                    <Ionicons name="warning" size={16} color={COLORS.expense} />
+                    <Ionicons name="warning" size={16} color={theme.expense} />
                     <Text style={styles.errorText}>Something Went Wrong Please Try Again</Text>
                     <TouchableOpacity onPress={()=>setError("")}>
-                        <Ionicons name="close" size={16} color={COLORS.textLight} />
+                        <Ionicons name="close" size={16} color={theme.textLight} />
                     </TouchableOpacity>
                     </View>
             ):null
@@ -142,10 +143,10 @@ export default function SignUpScreen() {
         <Text style={styles.title}>Create Account</Text>
          {error?(
                 <View style={styles.errorBox}>
-                    <Ionicons name="warning" size={16} color={COLORS.expense} />
+                    <Ionicons name="warning" size={16} color={theme.expense} />
                     <Text style={styles.errorText}>Something Went Wrong Please Try Again</Text>
                     <TouchableOpacity onPress={()=>setError("")}>
-                        <Ionicons name="close" size={16} color={COLORS.textLight} />
+                        <Ionicons name="close" size={16} color={theme.textLight} />
                     </TouchableOpacity>
                     </View>
             ) :null
@@ -178,7 +179,7 @@ export default function SignUpScreen() {
 
         <View style={styles.socialButtonsContainer}>
           <TouchableOpacity style={styles.socialButton} onPress={() => onSelectAuth('oauth_google')}>
-            <Ionicons name="logo-google" size={24} color={COLORS.text} />
+            <Ionicons name="logo-google" size={24} color={theme.text} />
           </TouchableOpacity>
           <TouchableOpacity style={styles.socialButton} onPress={() => onSelectAuth('oauth_facebook')}>
             <Ionicons name="logo-facebook" size={24} color="#1877F2" />

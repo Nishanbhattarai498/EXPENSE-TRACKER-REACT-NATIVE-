@@ -1,11 +1,11 @@
 // styles/auth.styles.js
 import { StyleSheet } from "react-native";
-import { COLORS } from "../constants/colors";
 
-export const styles = StyleSheet.create({
+// Dynamic styles based on theme
+export const getAuthStyles = (theme) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.background,
+    backgroundColor: theme.background,
     padding: 20,
     justifyContent: "center",
   },
@@ -17,25 +17,25 @@ export const styles = StyleSheet.create({
   title: {
     fontSize: 32,
     fontWeight: "bold",
-    color: COLORS.text,
+    color: theme.text,
     marginVertical: 15,
     textAlign: "center",
   },
   input: {
-    backgroundColor: COLORS.white,
+    backgroundColor: theme.white,
     borderRadius: 12,
     padding: 15,
     marginBottom: 16,
     borderWidth: 1,
-    borderColor: COLORS.border,
+    borderColor: theme.border,
     fontSize: 16,
-    color: COLORS.text,
+    color: theme.text,
   },
   errorInput: {
-    borderColor: COLORS.expense,
+    borderColor: theme.expense,
   },
   button: {
-    backgroundColor: COLORS.primary,
+    backgroundColor: theme.primary,
     borderRadius: 12,
     padding: 16,
     alignItems: "center",
@@ -43,7 +43,7 @@ export const styles = StyleSheet.create({
     marginBottom: 20,
   },
   buttonText: {
-    color: COLORS.white,
+    color: theme.white,
     fontSize: 18,
     fontWeight: "600",
   },
@@ -54,17 +54,17 @@ export const styles = StyleSheet.create({
     gap: 8,
   },
   footerText: {
-    color: COLORS.text,
+    color: theme.text,
     fontSize: 16,
   },
   linkText: {
-    color: COLORS.primary,
+    color: theme.primary,
     fontSize: 16,
     fontWeight: "600",
   },
   verificationContainer: {
     flex: 1,
-    backgroundColor: COLORS.background,
+    backgroundColor: theme.background,
     padding: 20,
     justifyContent: "center",
     alignItems: "center",
@@ -72,19 +72,19 @@ export const styles = StyleSheet.create({
   verificationTitle: {
     fontSize: 24,
     fontWeight: "bold",
-    color: COLORS.text,
+    color: theme.text,
     marginBottom: 20,
     textAlign: "center",
   },
   verificationInput: {
-    backgroundColor: COLORS.white,
+    backgroundColor: theme.white,
     borderRadius: 12,
     padding: 15,
     marginBottom: 16,
     borderWidth: 1,
-    borderColor: COLORS.border,
+    borderColor: theme.border,
     fontSize: 16,
-    color: COLORS.text,
+    color: theme.text,
     width: "100%",
     textAlign: "center",
     letterSpacing: 2,
@@ -96,14 +96,14 @@ export const styles = StyleSheet.create({
     padding: 12,
     borderRadius: 8,
     borderLeftWidth: 4,
-    borderLeftColor: COLORS.expense,
+    borderLeftColor: theme.expense,
     marginBottom: 16,
     flexDirection: "row",
     alignItems: "center",
     width: "100%",
   },
   errorText: {
-    color: COLORS.text,
+    color: theme.text,
     marginLeft: 8,
     flex: 1,
     fontSize: 14,
@@ -116,11 +116,11 @@ export const styles = StyleSheet.create({
   dividerLine: {
     flex: 1,
     height: 1,
-    backgroundColor: COLORS.border,
+    backgroundColor: theme.border,
   },
   dividerText: {
     marginHorizontal: 10,
-    color: COLORS.textLight,
+    color: theme.textLight,
   },
   socialButtonsContainer: {
     flexDirection: "row",
@@ -129,11 +129,11 @@ export const styles = StyleSheet.create({
     marginBottom: 20,
   },
   socialButton: {
-    backgroundColor: COLORS.white,
+    backgroundColor: theme.white,
     padding: 12,
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: COLORS.border,
+    borderColor: theme.border,
     width: 60,
     height: 60,
     justifyContent: "center",

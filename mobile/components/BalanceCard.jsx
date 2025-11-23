@@ -1,8 +1,11 @@
 import { View, Text } from "react-native";
-import { styles } from "../styles/home.styles";
+import { getHomeStyles } from "../styles/home.styles";
 import { COLORS } from "../constants/colors";
+import { useTheme } from "../context/ThemeContext";
 
 export const BalanceCard = ({ summary }) => {
+  const { theme } = useTheme();
+  const styles = getHomeStyles(theme);
   const safeBalance = Number(summary?.balance) || 0;
   const safeIncome = Number(summary?.income) || 0;
   const safeExpenses = Number(summary?.expenses) || 0;
