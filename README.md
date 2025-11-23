@@ -3,7 +3,7 @@
 A modern, full-stack expense tracking application built with **React Native (Expo)** and **Node.js**. Keep track of your income and expenses, visualize your financial health, and manage your budget with ease.
 
 <p align="center">
-  <img src="(https://github.com/user-attachments/assets/e2a96ffd-8e38-479a-96a5-53f31e3a4359)
+  <img src="https://github.com/user-attachments/assets/e2a96ffd-8e38-479a-96a5-53f31e3a4359
 " width="250" />
   <img src="/mnt/data/WhatsApp Image 2025-11-23 at 10.38.26_69197a85.jpg" width="250" />
   <img src="/mnt/data/WhatsApp Image 2025-11-23 at 10.38.26_a768f13b.jpg" width="250" />
