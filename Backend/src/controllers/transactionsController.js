@@ -18,30 +18,30 @@ async function  getTransactionByUserId(req, res)  {
 export { getTransactionByUserId };
 
 
-async function createTransaction  (req, res) {
+async function createTransaction (req, res) {
+  try {
+    const { user_id, title, amount, category } = req.body;       // Access the parsed JSON body 
 
-    try {
-        const { user_id, title, amount, category } = req.body;       // Access the parsed JSON body 
+    console.log('Create transaction request body:', req.body);
 
-        if (!user_id || !title || !amount || !category) {
-            return res.status(400).json({ error: 'Missing required fields' });
-        }
-
-        const transaction = await sql`INSERT INTO TRANSACTIONS (user_id, title, amount, category) 
-            VALUES (${user_id}, ${title}, ${amount}, ${category})
-            RETURNING *`;
-
-        console.log(transaction[0]);
-        res.status(201).json(transaction[0]); // Return the created transaction
-                  
-
-
-
-    } catch (error) {
-        console.error('Error creating transaction:', error);
-        res.status(500).json({ error: 'Internal server error' });
-
+    if (!user_id || !title || !amount || !category) {
+      return res.status(400).json({ error: 'Missing required fields' });
     }
+
+    const transaction = await sql`INSERT INTO TRANSACTIONS (user_id, title, amount, category) 
+      VALUES (${user_id}, ${title}, ${amount}, ${category})
+      RETURNING *`;
+
+    console.log('Transaction created:', transaction[0]);
+    res.status(201).json(transaction[0]); // Return the created transaction
+  } catch (error) {
+    console.error('Error creating transaction:', {
+      message: error.message,
+      stack: error.stack,
+      body: req.body,
+    });
+    res.status(500).json({ error: 'Internal server error' });
+  }
 }
 export { createTransaction };
 
@@ -51,7 +51,7 @@ async function deleteTransaction (req, res) {
         if(isNaN(parseInt(id))) {
             return res.status(400).json({ error: 'Invalid transaction ID' });
         }
-        await sql`DELETE FROM transactions WHERE id = ${id} RETURNING * `;
+        const result = await sql`DELETE FROM transactions WHERE id = ${id} RETURNING * `;
 
         if (result.length === 0) {
             return res.status(404).json({ error: 'Transaction not found' });

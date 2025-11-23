@@ -11,7 +11,8 @@ const  rateLimiter = async (req, res, next) => {
     }
     catch (error) {
         console.error('Rate limiter error:', error);
-        res.status(500).json({ error: 'Internal server error' });
+        // In case of rate limiter error, allow the request to proceed
+        next();
     }
 }
 export default rateLimiter;
