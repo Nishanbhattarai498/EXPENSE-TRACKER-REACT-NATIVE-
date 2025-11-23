@@ -2,7 +2,7 @@
 import React, { useCallback } from 'react';
 import { Alert } from 'react-native';
 
-const API_URL = 'https://localhost:3000/api';
+const API_URL = 'https://expense-tracker-react-native-3.onrender.com/api';
 
 
 export const useTransaction = (userId) => {

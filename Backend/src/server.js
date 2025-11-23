@@ -4,10 +4,13 @@ import dotenv from 'dotenv';
 import rateLimiter from './middleware/rateLimiter.js';
 import transactionRoute from './routes/transactionRoute.js';
 import { initDb } from './config/db.js';
+import job from './config/cron.js';
 
 dotenv.config();
 
 const app = express();
+
+if (process.env.NODE_ENV === "production") job.start(); // Start the cron job
 
 app.use(rateLimiter);
 app.use(express.json()); // Middleware to parse JSON bodies
