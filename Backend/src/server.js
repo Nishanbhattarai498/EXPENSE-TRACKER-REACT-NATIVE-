@@ -22,7 +22,7 @@ app.use(express.json()); // Middleware to parse JSON bodies
 // });
 
 
-const PORT = process.env.PORT;  
+const PORT = process.env.PORT || 3000;
 
 
 

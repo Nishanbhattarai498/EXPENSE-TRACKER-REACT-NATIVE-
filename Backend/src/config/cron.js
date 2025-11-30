@@ -2,8 +2,14 @@ import cron from "cron";
 import https from "https";
 
 const job = new cron.CronJob("*/14 * * * *", function () {
+  const apiUrl = process.env.API_URL;
+  if (!apiUrl) {
+    console.warn("Skipping cron job: API_URL environment variable is not set.");
+    return;
+  }
+
   https
-    .get(process.env.API_URL, (res) => {
+    .get(apiUrl, (res) => {
       if (res.statusCode === 200) console.log("GET request sent successfully");
       else console.log("GET request failed", res.statusCode);
     })

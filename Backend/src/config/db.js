@@ -3,6 +3,11 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
+if (!process.env.DATABASE_URL) {
+  console.error("DATABASE_URL environment variable is not set.");
+  process.exit(1);
+}
+
 //Creates a sql connection using our database url from .env file
 export const sql = neon(process.env.DATABASE_URL);
 
